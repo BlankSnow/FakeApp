@@ -1,2 +1,3 @@
 # FakeApp
-\nPrueba técnica para Android.
+
+Prueba técnica para Android.

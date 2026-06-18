@@ -24,3 +24,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "FakeApp"
 include(":app")
+include(":domain")
+include(":data")
+include(":core")
