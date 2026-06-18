@@ -1,7 +1,51 @@
 package com.blank.fakeapp.data.di
 
+import com.blank.fakeapp.data.remote.api.FakeStoreApi
+import com.blank.fakeapp.data.repository.ProductRepositoryImpl
+import com.blank.fakeapp.data.repository.UserRepositoryImpl
+import com.blank.fakeapp.domain.repository.ProductRepository
+import com.blank.fakeapp.domain.repository.UserRepository
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
-    // Repositories, Retrofit, Room will go here
+    
+    // Networking
+    singleOf(::provideHttpLoggingInterceptor)
+    singleOf(::provideOkHttpClient)
+    singleOf(::provideRetrofit)
+    singleOf(::provideFakeStoreApi)
+
+    // Repositories
+    singleOf(::ProductRepositoryImpl) { bind<ProductRepository>() }
+    singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
+}
+
+private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+    return HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+}
+
+private fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    return OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build()
+}
+
+private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl(FakeStoreApi.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+}
+
+private fun provideFakeStoreApi(retrofit: Retrofit): FakeStoreApi {
+    return retrofit.create(FakeStoreApi::class.java)
 }
