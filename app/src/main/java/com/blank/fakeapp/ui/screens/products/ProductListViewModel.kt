@@ -34,7 +34,6 @@ class ProductListViewModel(
     fun toggleFavorite(product: Product) {
         viewModelScope.launch {
             repository.toggleFavorite(product)
-            // Actualizamos el estado local para reflejar el cambio inmediato
             val currentState = _uiState.value
             if (currentState is ProductUiState.Success) {
                 val updatedList = currentState.products.map {

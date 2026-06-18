@@ -3,4 +3,7 @@
     <string name="screen_products">Products</string>
     <string name="screen_favorites">Favorites</string>
     <string name="screen_profile">Profile</string>
+    <string name="error_loading_products">Error loading products: %s</string>
+    <string name="retry">Retry</string>
+    <string name="no_products_found">No products found</string>
 </resources>
