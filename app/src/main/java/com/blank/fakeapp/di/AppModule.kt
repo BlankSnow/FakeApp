@@ -1,7 +1,9 @@
 package com.blank.fakeapp.di
 
+import com.blank.fakeapp.ui.screens.products.ProductListViewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
-    // ViewModels will go here
+    viewModelOf(::ProductListViewModel)
 }
