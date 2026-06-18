@@ -47,6 +47,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
+    
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
     testImplementation(libs.koin.test)
