@@ -14,6 +14,9 @@ kotlin {
 }
 
 dependencies {
+    // Koin Core (Pure Kotlin)
+    implementation(libs.koin.core)
+
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }

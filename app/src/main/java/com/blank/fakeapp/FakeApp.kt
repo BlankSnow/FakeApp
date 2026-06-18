@@ -1,8 +1,9 @@
 package com.blank.fakeapp
 
 import android.app.Application
-import com.blank.fakeapp.di.appModule
 import com.blank.fakeapp.data.di.dataModule
+import com.blank.fakeapp.di.appModule
+import com.blank.fakeapp.domain.di.domainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,7 +15,7 @@ class FakeApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@FakeApp)
-            modules(appModule, dataModule)
+            modules(appModule, dataModule, domainModule)
         }
     }
 }

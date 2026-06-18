@@ -3,22 +3,25 @@ package com.blank.fakeapp.ui.screens.products
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blank.fakeapp.domain.model.Product
-import com.blank.fakeapp.domain.repository.ProductRepository
+import com.blank.fakeapp.domain.usecase.GetFavoritesUseCase
+import com.blank.fakeapp.domain.usecase.GetProductsUseCase
+import com.blank.fakeapp.domain.usecase.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    private val repository: ProductRepository
+    private val getProductsUseCase: GetProductsUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
 
     private val _remoteProducts = MutableStateFlow<List<Product>>(emptyList())
     private val _isLoading = MutableStateFlow(false)
     private val _error = MutableStateFlow<String?>(null)
 
-    // Combinamos los productos de la API con los favoritos de Room en tiempo real
     val uiState: StateFlow<ProductUiState> = combine(
         _remoteProducts,
-        repository.getFavoriteProducts(),
+        getFavoritesUseCase(),
         _isLoading,
         _error
     ) { remote, favorites, loading, error ->
@@ -47,7 +50,7 @@ class ProductListViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
-            repository.getProducts().onSuccess { products ->
+            getProductsUseCase().onSuccess { products ->
                 _remoteProducts.value = products
             }.onFailure { error ->
                 _error.value = error.message ?: "Unknown error"
@@ -58,9 +61,7 @@ class ProductListViewModel(
 
     fun toggleFavorite(product: Product) {
         viewModelScope.launch {
-            repository.toggleFavorite(product)
-            // Ya no necesitamos actualizar el estado manualmente aquí, 
-            // el combine lo hará solo cuando Room cambie.
+            toggleFavoriteUseCase(product)
         }
     }
 }
