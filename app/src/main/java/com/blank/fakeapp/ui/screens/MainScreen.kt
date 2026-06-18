@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -31,13 +32,15 @@ fun MainScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(currentScreen.titleRes)) }
+                title = { Text(stringResource(currentScreen.titleRes)) },
+                modifier = Modifier.testTag("main_top_bar")
             )
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(modifier = Modifier.testTag("bottom_nav")) {
                 items.forEach { screen ->
                     NavigationBarItem(
+                        modifier = Modifier.testTag("nav_item_${screen.route}"),
                         icon = { Icon(screen.icon, contentDescription = null) },
                         label = { Text(stringResource(screen.titleRes)) },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
