@@ -15,7 +15,6 @@ import com.blank.fakeapp.R
 import com.blank.fakeapp.ui.components.ProductItem
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
     modifier: Modifier = Modifier,
@@ -23,53 +22,42 @@ fun ProductListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold(
+    Box(
         modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.screen_products)) }
-            )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
-        ) {
-            when (val state = uiState) {
-                is ProductUiState.Loading -> {
-                    CircularProgressIndicator()
-                }
-                is ProductUiState.Error -> {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.error_loading_products, state.message),
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                        Button(onClick = { viewModel.loadProducts() }) {
-                            Text(stringResource(R.string.retry))
-                        }
+        contentAlignment = Alignment.Center
+    ) {
+        when (val state = uiState) {
+            is ProductUiState.Loading -> {
+                CircularProgressIndicator()
+            }
+            is ProductUiState.Error -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.error_loading_products, state.message),
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    Button(onClick = { viewModel.loadProducts() }) {
+                        Text(stringResource(R.string.retry))
                     }
                 }
-                is ProductUiState.Success -> {
-                    if (state.products.isEmpty()) {
-                        Text(stringResource(R.string.no_products_found))
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(8.dp)
-                        ) {
-                            items(state.products, key = { it.id }) { product ->
-                                ProductItem(
-                                    product = product,
-                                    onToggleFavorite = { viewModel.toggleFavorite(it) }
-                                )
-                            }
+            }
+            is ProductUiState.Success -> {
+                if (state.products.isEmpty()) {
+                    Text(stringResource(R.string.no_products_found))
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(8.dp)
+                    ) {
+                        items(state.products, key = { it.id }) { product ->
+                            ProductItem(
+                                product = product,
+                                onToggleFavorite = { viewModel.toggleFavorite(it) }
+                            )
                         }
                     }
                 }

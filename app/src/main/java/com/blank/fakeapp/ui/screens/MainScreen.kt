@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.blank.fakeapp.ui.navigation.NavGraph
 import com.blank.fakeapp.ui.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -22,11 +23,19 @@ fun MainScreen() {
         Screen.Profile
     )
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val currentScreen = items.find { it.route == currentDestination?.route } ?: Screen.Products
+
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(currentScreen.titleRes)) }
+            )
+        },
         bottomBar = {
             NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
                 items.forEach { screen ->
                     NavigationBarItem(
                         icon = { Icon(screen.icon, contentDescription = null) },
