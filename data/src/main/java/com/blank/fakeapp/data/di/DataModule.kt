@@ -62,6 +62,6 @@ private fun provideDatabase(context: Context): FakeAppDatabase {
     return Room.databaseBuilder(
         context,
         FakeAppDatabase::class.java,
-        "fake_app_db"
+        "fake_app_db",
     ).build()
 }
