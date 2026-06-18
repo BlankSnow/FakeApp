@@ -30,8 +30,3 @@ class FavoritesViewModel(
         }
     }
 }
-
-sealed interface FavoritesUiState {
-    data object Loading : FavoritesUiState
-    data class Success(val products: List<Product>) : FavoritesUiState
-}
