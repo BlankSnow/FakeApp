@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.blank.fakeapp.ui.screens.favorites.FavoritesScreen
 import com.blank.fakeapp.ui.screens.products.ProductListScreen
 
 @Composable
@@ -21,7 +22,7 @@ fun NavGraph(
             ProductListScreen()
         }
         composable(Screen.Favorites.route) {
-            // TODO: Implement FavoriteScreen
+            FavoritesScreen()
         }
         composable(Screen.Profile.route) {
             // TODO: Implement ProfileScreen
