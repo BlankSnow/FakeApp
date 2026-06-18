@@ -7,4 +7,7 @@
     <string name="retry">Retry</string>
     <string name="no_products_found">No products found</string>
     <string name="no_favorites_found">You haven\'t added any favorites yet</string>
+    <string name="profile_email">Email: %s</string>
+    <string name="profile_phone">Phone: %s</string>
+    <string name="favorites_count">Favorite Items: %d</string>
 </resources>
