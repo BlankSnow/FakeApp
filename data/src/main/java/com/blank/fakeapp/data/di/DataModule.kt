@@ -2,6 +2,7 @@ package com.blank.fakeapp.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.blank.fakeapp.data.BuildConfig
 import com.blank.fakeapp.data.local.db.FakeAppDatabase
 import com.blank.fakeapp.data.remote.api.FakeStoreApi
 import com.blank.fakeapp.data.repository.ProductRepositoryImpl
@@ -36,7 +37,11 @@ val dataModule = module {
 
 private fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
     return HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
     }
 }
 
