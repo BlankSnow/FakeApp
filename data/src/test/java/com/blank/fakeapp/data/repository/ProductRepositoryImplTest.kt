@@ -32,7 +32,6 @@ class ProductRepositoryImplTest {
             ProductDto(1, "Product 1", 10.0, "Desc 1", "Cat 1", "Img 1", RatingDto(4.0, 5))
         )
         coEvery { api.getProducts() } returns remoteProducts
-        coEvery { dao.getFavoriteIds() } returns listOf(1)
 
         // When
         val result = repository.getProducts()
@@ -41,7 +40,7 @@ class ProductRepositoryImplTest {
         assertTrue(result.isSuccess)
         val products = result.getOrNull()
         assertEquals(1, products?.size)
-        assertEquals(true, products?.first()?.isFavorite)
+        assertEquals(false, products?.first()?.isFavorite)
     }
 
     @Test

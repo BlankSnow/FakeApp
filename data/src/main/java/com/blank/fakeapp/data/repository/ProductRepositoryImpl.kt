@@ -19,13 +19,7 @@ class ProductRepositoryImpl(
     override suspend fun getProducts(): Result<List<Product>> = withContext(Dispatchers.IO) {
         try {
             val remoteProducts = api.getProducts()
-            val favoriteIds = favoriteDao.getFavoriteIds()
-            
-            val products = remoteProducts.map { dto ->
-                dto.toDomain().copy(
-                    isFavorite = favoriteIds.contains(dto.id)
-                )
-            }
+            val products = remoteProducts.map { it.toDomain() }
             Result.success(products)
         } catch (e: Exception) {
             Result.failure(e)
