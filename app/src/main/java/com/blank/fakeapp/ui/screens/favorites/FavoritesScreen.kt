@@ -30,6 +30,13 @@ fun FavoritesScreen(
             is FavoritesUiState.Loading -> {
                 CircularProgressIndicator()
             }
+            is FavoritesUiState.Error -> {
+                Text(
+                    text = stringResource(R.string.error_loading_products, state.message),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
             is FavoritesUiState.Success -> {
                 if (state.products.isEmpty()) {
                     Text(

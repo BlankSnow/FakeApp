@@ -5,10 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.blank.fakeapp.domain.model.Product
 import com.blank.fakeapp.domain.usecase.GetFavoritesUseCase
 import com.blank.fakeapp.domain.usecase.ToggleFavoriteUseCase
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
@@ -17,8 +14,11 @@ class FavoritesViewModel(
 ) : ViewModel() {
 
     val uiState: StateFlow<FavoritesUiState> = getFavoritesUseCase()
-        .map { products ->
+        .map<List<Product>, FavoritesUiState> { products ->
             FavoritesUiState.Success(products)
+        }
+        .catch { error ->
+            emit(FavoritesUiState.Error(error.message ?: "Unknown error"))
         }
         .stateIn(
             scope = viewModelScope,
